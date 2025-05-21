@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'media.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Чайка</title>
+</head>
+<body>
+    <header>
+        <div class="contacts">
+            <div class="block">
+                <img src="{% static 'img/phone.png' %}">
+                <a href="tel:+78172758055">+7(817)275-80-55</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/mail.png' %}">
+                <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/location.png' %}">
+                <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+            </div>
+        </div>
+
+        <div class="shapka">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"></a>
+            </div>
+
+            <input class="side-menu" type="checkbox" id="side-menu"/>
+            <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+
+            <nav class="nav">
+                <ul class="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'team' %}">О коллективе</a></li>
+                    <li><a href="{% url 'education' %}">Обучение</a></li>
+                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
+                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
+                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="banner animate-on-scroll">
+            <h1>Школа-студия драматического искусства "Чайка" и Театр молодого актёра</h1>
+            <a>НОУ ДО "Светлые знания", г. Вологда</a><br>
+            <a>гармоничное развитие ребенка посредством театрального искусства</a>
+        </div>
+        <div class="hello animate-on-scroll">
+            <h1>Кто мы такие?</h1>
+            <div class="hellocontent animate-on-scroll">
+                <div class="hellotext">
+                    <a><span style="font-weight: bold;">Негосударственное образовательное учреждение дополнительного образования "Светлые знания" (Школа-студия драматического 
+                        искусства "Чайка")</span> существует в Вологде с 1999 года. Наша миссия — гармоничное развитие ребёнка посредством театрального искусства.</a><br><br>
+                    <a>Здесь занимаются дети с 3 лет, есть также и взрослые группы. В программе обучения студийцев:<br>
+                        ✓ актерское мастерство;<br>
+                        ✓ хореография;<br>
+                        ✓ вокал;<br>
+                        ✓ сценическая речь;<br>
+                        ✓ сценическое движение;<br>
+                        ✓ сценография.</a><br><br>
+                    <a href="{% url 'education' %}"><button>Выбрать подходящую группу</button></a>
+                </div>
+                <div class="helloimg">
+                    <img src="{% static 'img/kids.jpg' %}" alt='Спектакль "Экология души", 20.09.2023'>
+                </div>
+            </div>
+            <div class="hellocontent animate-on-scroll">
+                <div class="helloimg">
+                    <img src="{% static 'img/toddlers.jpg' %}" alt='Фото группы для детей 4-6 лет'>
+                </div>
+                <div class="hellotext">
+                    <a>Педагоги работают по авторским программам. Коллектив — многократный лауреат и обладатель Гран-При российских и международных конкурсов и 
+                        фестивалей. Также на базе театра, помимо спектаклей, проводятся конкурсы и различные развлекательные мероприятия.</a><br><br>
+                    <div class="hellobuttons">
+                        <a href="{% url 'team' %}"><button>О коллективе</button></a>
+                        <a href="{% url 'performances' %}"><button>О спектаклях</button></a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer_up">
+            <div class="map">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'team' %}">О коллективе</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'teachers' %}">Педагоги</a>
+                <a href="{% url 'performances' %}">Деятельность</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </div>
+            <div class="contacts2">
+                <div class="block">
+                    <img src="{% static 'img/phone.png' %}">
+                    <a href="tel:+78172758055">+7(817)275-80-55</a>
+                </div>
+                <div class="block">
+                    <a href="mailto:teatr-studio99@mail.ru"><img src="{% static 'img/mail.png' %}"></a>
+                    <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+                </div>
+                <div class="block">
+                    <img src="{% static 'img/location.png' %}">
+                    <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+                </div>
+            </div>
+            <div class="socials">
+                <div class="block2">
+                    <a href="https://vk.com/teatr_tma"><img src="{% static 'img/vk.png' %}"></a>
+                </div>
+                <div class="block2">
+                    <a href="https://www.youtube.com/channel/UCdfqQWyemN2Y1ZtkSkIibNw"><img src="{% static 'img/yt.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_down">
+            <a>© НОУ ДО "Светлые знания", 1999-2025</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

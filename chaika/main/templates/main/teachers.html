@@ -1,0 +1,308 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'media.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Чайка</title>
+</head>
+<body>
+    <header>
+        <div class="contacts">
+            <div class="block">
+                <img src="{% static 'img/phone.png' %}">
+                <a href="tel:+78172758055">+7(817)275-80-55</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/mail.png' %}">
+                <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/location.png' %}">
+                <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+            </div>
+        </div>
+
+        <div class="shapka">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"></a>
+            </div>
+
+            <input class="side-menu" type="checkbox" id="side-menu"/>
+            <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+
+            <nav class="nav">
+                <ul class="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'team' %}">О коллективе</a></li>
+                    <li><a href="{% url 'education' %}">Обучение</a></li>
+                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
+                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
+                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="teachers animate-on-scroll">
+            <h1>Наши педагоги и администрация</h1>
+            <div class="teacher_cards">
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach1.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>артист Театра Юного Зрителя</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Александр Александрович Андрюшин</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог по сценическому движению</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach2.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>заслуженная артистка РФ</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Наталья Юрьевна Воробьёва</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>режиссёр, педагог по актёрскому мастерству и сценической речи, руководитель старшей группы ТМА</a>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach3.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>директор и художественный руководитель</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Марина Николаевна Семёнова</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>режиссёр, педагог по актёрскому мастерству, руководитель старшей группы ШСДИ</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach4.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Ершова Екатерина Ивановна</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог по вокалу</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach5.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Малинина Ирина Анатольевна</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>концертмейстер</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach8.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Вера Владимировна Пишенина</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог по эстрадному вокалу</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach11.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>администрация</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Надежда Николаевна Вихарева</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>администратор</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach7.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>администрация</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Грознова Елена Юрьевна</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>заместитель директора по проектам</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach9.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>администрация, педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Светлана Михайловна Резанова</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог-организатор</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach10.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>артист ОккервильТеатра, стратистратор</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Смирнов Николай Сергеевич</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог по актёрскому мастерству и сценической речи</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach6.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Герасимовская Елена Николаевна</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог хореографии</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher_card">
+                    <div>
+                        <img src="{% static 'img/teach12.jpg' %}">
+                    </div>
+                    <div class="body">
+                        <div class="teach_title">
+                            <a>педагог</a>
+                        </div>
+                        <div class="teach_big">
+                            <a>Юлия Владимировна Комракова</a>
+                        </div>
+                        <div class="teach_small">
+                            <a>педагог по актерскому мастерству и сценической речи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </main>
+
+    <footer>
+        <div class="footer_up">
+            <div class="map">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'team' %}">О коллективе</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'teachers' %}">Педагоги</a>
+                <a href="{% url 'performances' %}">Деятельность</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </div>
+            <div class="contacts2">
+                <div class="block">
+                    <img src="{% static 'img/phone.png' %}">
+                    <a href="tel:+78172758055">+7(817)275-80-55</a>
+                </div>
+                <div class="block">
+                    <a href="mailto:teatr-studio99@mail.ru"><img src="{% static 'img/mail.png' %}"></a>
+                    <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+                </div>
+                <div class="block">
+                    <img src="{% static 'img/location.png' %}">
+                    <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+                </div>
+            </div>
+            <div class="socials">
+                <div class="block2">
+                    <a href="https://vk.com/teatr_tma"><img src="{% static 'img/vk.png' %}"></a>
+                </div>
+                <div class="block2">
+                    <a href="https://www.youtube.com/channel/UCdfqQWyemN2Y1ZtkSkIibNw"><img src="{% static 'img/yt.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_down">
+            <a>© НОУ ДО "Светлые знания", 1999-2025</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

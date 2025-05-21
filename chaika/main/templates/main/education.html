@@ -1,0 +1,421 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'media.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Чайка</title>
+</head>
+<body>
+    <header>
+        <div class="contacts">
+            <div class="block">
+                <img src="{% static 'img/phone.png' %}">
+                <a href="tel:+78172758055">+7(817)275-80-55</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/mail.png' %}">
+                <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/location.png' %}">
+                <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+            </div>
+        </div>
+
+        <div class="shapka">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"></a>
+            </div>
+
+            <input class="side-menu" type="checkbox" id="side-menu"/>
+            <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+
+            <nav class="nav">
+                <ul class="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'team' %}">О коллективе</a></li>
+                    <li><a href="{% url 'education' %}">Обучение</a></li>
+                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
+                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
+                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="education animate-on-scroll">
+            <h1>Расписание и информация о группах</h1>
+            <div class="otdels">
+                <h3>Драматическое отделение</h3>
+                <h3>Эстрадное отделение</h3>            
+                <h3>Кукольное отделение</h3>
+            </div>
+            
+            <div class="drama animate-on-scroll">
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group1.png' %}" alt="Азбука театра">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Азбука театра</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 3-4 года</a>
+                                <div class="time">
+                                    <a><span>Занятия:</span> суббота</a>
+                                    <a class="time_color">12:30-13:30</a>
+                                </div>
+                                <a class="group_info">Группа раннего творческого развития. Здесь малыши в игровой форме знакомятся с миром театра 
+                                    и делают свои первые творческие шаги.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актерское мастерство (театральные игры и упражнения);<br>
+                                    ✓ хореография;<br>
+                                    ✓ музыка;<br>
+                                    ✓ вокал.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group2.png' %}" alt="Младшая группа">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Младшая группа</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 4-6 лет</a>
+                                <div class="time">
+                                    <a><span>Занятия 2 раза в неделю:</span> вторник</a>
+                                    <a class="time_color">18:00-20:15</a>
+                                    <a>; суббота</a>
+                                    <a class="time_color">12:30-14:45</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Занятия 1 раз в неделю:</span> четверг</a>
+                                    <a class="time_color">18:10-20:10</a>
+                                </div>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актерское мастерство;<br>
+                                    ✓ хореография;<br>
+                                    ✓ музыка;<br>
+                                    ✓ сценическая речь.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group3.png' %}" alt="Подготовительная группа">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Подготовительная группа</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 7-9 лет</a>
+                                <div class="time">
+                                    <a><span>Утренняя группа:</span> понедельник, среда</a>
+                                    <a class="time_color">09:00-11:00</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Дневная группа:</span>  понедельник, среда</a>
+                                    <a class="time_color">15:30-17:30</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Вечерняя группа:</span>  понедельник, среда</a>
+                                    <a class="time_color">17:30-20:20</a>
+                                </div>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актерское мастерство;<br>
+                                    ✓ хореография;<br>
+                                    ✓ вокал;<br>
+                                    ✓ сценическое движение;<br>
+                                    ✓ сценическая речь.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group4.png' %}" alt="ШСДИ (Школа-Студия Драматического Искусства) младшая и старшая">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">ШСДИ (Школа-Студия Драматического Искусства) младшая и старшая</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 11-13 и 13-15 лет</a>
+                                <div class="time">
+                                    <a><span>Младшая группа:</span> вторник, четверг</a>
+                                    <a class="time_color">17:30-20:20</a>
+                                    <a>; пятница</a>
+                                    <a class="time_color">18:10-20:20</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Старшая группа:</span>  понедельник, среда, пятница</a>
+                                    <a class="time_color">17:30-20:20</a>
+                                </div>
+                                <a class="group_info">Студийцев ждет работа над спектаклями, участие в концертной 
+                                    деятельности, во всероссийских, межрегиональных и международных конкурсах и 
+                                    фестивалях, а также в городских мероприятиях.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актерское мастерство;<br>
+                                    ✓ хореография;<br>
+                                    ✓ вокал;<br>
+                                    ✓ сценическое движение;<br>
+                                    ✓ сценическая речь.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group5.png' %}" alt="ТМА (Театр Молодого Актёра) младшая и старшая">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">ТМА (Театр Молодого Актёра) младшая и старшая</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 14-17 и 15-20 лет</a>
+                                <div class="time">
+                                    <a><span>Младшая группа:</span>  понедельник, среда, пятница</a>
+                                    <a class="time_color">17:30-20:20</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Старшая группа:</span> понедельник, среда</a>
+                                    <a class="time_color">17:30-20:20</a>
+                                    <a>; суббота</a>
+                                    <a class="time_color">14:30-17:30</a>
+                                </div>
+                                <a class="group_info">Студийцев ждет работа над спектаклями, участие в концертной 
+                                    деятельности, во всероссийских, межрегиональных и международных конкурсах и 
+                                    фестивалях, а также в городских мероприятиях.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актерское мастерство;<br>
+                                    ✓ хореография;<br>
+                                    ✓ вокал;<br>
+                                    ✓ сценическое движение;<br>
+                                    ✓ сценическая речь.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="estradnoe animate-on-scroll">
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group6.png' %}" alt="Подготовительная группа «ЧАЕЧКИ.РУ»">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Подготовительная группа «ЧАЕЧКИ.РУ»</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 6-8 лет</a>
+                                <div class="time">
+                                    <a><span>Первая смена:</span> вторник, четверг</a>
+                                    <a class="time_color">18:00-20:15</a>
+                                </div>
+                                <a class="group_info">Развитие музыкальных способностей ребенка, создание концертных номеров, участие 
+                                    в конкурсах и фестивалях.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ мастер-классы по степу;<br>
+                                    ✓ ансамблевое пение;<br>
+                                    ✓ хореография;<br>
+                                    ✓ эстрадный вокал.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group7.png' %}" alt="Основной состав «Чайка.ру»">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Основной состав «Чайка.ру»</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 7-14 лет</a>
+                                <div class="time">
+                                    <a><span>Первая смена:</span> среда</a>
+                                    <a class="time_color">09:00-11:00</a>
+                                    <a>; суббота</a>
+                                    <a class="time_color">16:00-18:15</a>
+                                </div>
+                                <div class="time">
+                                    <a><span>Вторая смена:</span> среда</a>
+                                    <a class="time_color">15:30-17:30</a>
+                                    <a>; суббота</a>
+                                    <a class="time_color">09:00-12:00</a>
+                                </div>
+                                <a class="group_info">Здесь дети научатся петь с правильной, точной интонацией, работать 
+                                    с микрофоном, развивать музыкальный слух, артикуляцию и правильное дыхание. Они освоят 
+                                    степ, основы классического и эстрадного танца, приобретут уверенность и раскрепощенность на сцене.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ мастер-классы по степу, постановке голоса и пр.;<br>
+                                    ✓ актерское мастерство;<br>
+                                    ✓ хореография;<br>
+                                    ✓ эстрадный вокал.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+
+                <div class="line">
+                    <hr>
+                </div>
+
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group8.png' %}" alt="ФАКУЛЬТАТИВНЫЙ КУРС раз в неделю">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">ФАКУЛЬТАТИВНЫЙ КУРС раз в неделю</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 7-14 лет</a>
+                                <div class="time">
+                                    <a><span>Первая смена:</span> воскресенье</a>
+                                    <a class="time_color">13:00-16:00</a>
+                                </div>
+                                <a class="group_info">Группа для ребят, которым удобно посещать Школу-студию один 
+                                    раз в неделю. Здесь студийцы прорабатывают свои «зажимы», становятся увереннее 
+                                    в себе, работают с голосом, учатся правильному дыханию, учатся слышать свое тело, 
+                                    учатся выражать свои эмоции, приобретая незаменимые навыки для любого школьника (и не только).</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актёрское мастерство;<br>
+                                    ✓ сценическая речь;<br>
+                                    ✓ хореография;<br>
+                                    ✓ вокал.</a><br>
+                                <a class="group_info"><span>Занятия в этой группе начинаются с 22 сентября и завершаются в конце апреля.</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kukolnoe animate-on-scroll">
+                <div class="education_card">
+                    <div class="left_img">
+                        <img src="{% static 'img/group9.png' %}" alt="Отделение кукольного театра">
+                    </div>
+                    <div class="group">
+                        <a class="group_name">Отделение кукольного театра</a>
+                        <div class="group_parts">
+                            <div class="education_left">
+                                <a><span>Возраст:</span> 10-14 лет</a>
+                                <div class="time">
+                                    <a><span>Занятия:</span> понедельник, среда</a>
+                                    <a class="time_color">15:30-17:30</a>
+                                </div>
+                                <a class="group_info">Ребенок учится правильно и красиво говорить, становится увереннее 
+                                    в себе, приобретает опыт сценических выступлений, а также учится самостоятельно изготавливать 
+                                    кукол и реквизит для спектаклей и номеров, развивает фантазию и логическое мышление.</a>
+                                    <a class="group_info">В этом году группа работает на бесплатной основе в рамках субсидии Правительства Вологодской области.</a>
+                            </div>
+                            <div class="education_right">
+                                <a class="group_info"><span>В программе обучения:</span><br>
+                                    ✓ актёрское мастерство;<br>
+                                    ✓ сценическая речь;<br>
+                                    ✓ вокал;<br>
+                                    ✓ кукловождение.</a><br>
+                                <a class="group_info"><span>Набор на конкурсной основе, необходима предварительная запись на прослушивание.</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer_up">
+            <div class="map">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'team' %}">О коллективе</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'teachers' %}">Педагоги</a>
+                <a href="{% url 'performances' %}">Деятельность</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </div>
+            <div class="contacts2">
+                <div class="block">
+                    <img src="{% static 'img/phone.png' %}">
+                    <a href="tel:+78172758055">+7(817)275-80-55</a>
+                </div>
+                <div class="block">
+                    <a href="mailto:teatr-studio99@mail.ru"><img src="{% static 'img/mail.png' %}"></a>
+                    <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+                </div>
+                <div class="block">
+                    <img src="{% static 'img/location.png' %}">
+                    <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+                </div>
+            </div>
+            <div class="socials">
+                <div class="block2">
+                    <a href="https://vk.com/teatr_tma"><img src="{% static 'img/vk.png' %}"></a>
+                </div>
+                <div class="block2">
+                    <a href="https://www.youtube.com/channel/UCdfqQWyemN2Y1ZtkSkIibNw"><img src="{% static 'img/yt.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_down">
+            <a>© НОУ ДО "Светлые знания", 1999-2025</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

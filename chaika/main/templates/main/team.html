@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'media.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Чайка</title>
+</head>
+<body>
+    <header>
+        <div class="contacts">
+            <div class="block">
+                <img src="{% static 'img/phone.png' %}">
+                <a href="tel:+78172758055">+7(817)275-80-55</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/mail.png' %}">
+                <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/location.png' %}">
+                <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+            </div>
+        </div>
+
+        <div class="shapka">
+            <div class="logo">
+                <a href="index.html"><img src="{% static 'img/logo.png' %}"></a>
+            </div>
+
+            <input class="side-menu" type="checkbox" id="side-menu"/>
+            <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+
+            <nav class="nav">
+                <ul class="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'team' %}">О коллективе</a></li>
+                    <li><a href="{% url 'education' %}">Обучение</a></li>
+                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
+                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
+                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="team animate-on-scroll">
+            <h1>О коллективе</h1>
+            <div class="attention animate-on-scroll">
+                <hr><a>Школа-студия драматического искусства и Театр молодого актёра существуют в Вологде уже более 25 лет!</a><hr>
+            </div>
+            <div class="teamcontent animate-on-scroll">
+                <div class="teamtext animate-on-scroll">
+                    <a><span style="font-weight: bold;">В 1999 году</span> группа инициативных творческих людей объединилась, чтобы создать 
+                        школу-студию, в которой дети имели бы возможность развиваться, творчески выражать себя. Идею поддержал НКО 
+                        "Фонд поддержки гражданских инициатив", который выступил учредителем Школы-студии драматического искусства 
+                        — <span style="font-weight: bold;">негосударственного учреждения дополнительного образования "Светлые знания"</span>.</a><br><br>
+                    <a>Был объявлен конкурс для молодых и талантливых, которые хотят заниматься театральным искусством. Четыре человека на место – именно 
+                        таким был конкурсный отбор. Жюри, в которое вошли актеры, режиссеры вологодских театров, а также музыканты и хореографы, выбрали 
+                        самых достойных.</a><br><br>
+                </div>
+                <div class="teamimg animate-on-scroll">
+                    <img src="{% static 'img/team1.jpg' %}" alt='Историческое фото: первые прослушивания, 1999 год'>
+                    <a>Историческое фото: первые прослушивания, 1999 год</a>
+                </div>
+            </div>
+            <div class="attention animate-on-scroll">
+                <hr><a>Миссия школы-студии: гармони﻿чное развитие ребенка посредством театрального искусства</a><hr>
+            </div>
+            <div class="teamcontent animate-on-scroll">
+                <div class="teamimg">
+                    <img src="{% static 'img/team2.jpg' %}" alt='Первые студийцы, 1999 год'>
+                    <a>Первые студийцы, 1999 год</a>
+                </div>
+                <div class="teamtext animate-on-scroll">
+                    <a>Ребята в течение пяти лет постигали основы актерского искусства. Им преподавались такие предметы, как 
+                        актерское мастерство, сценическая речь, сценическое движение, танец, вокал и многое другое. Первые 
+                        спектакли: "Коррида" (реж. М. Семенова) и "Бременские музыканты" (реж. Н. Воробьева) завоевали Гран-При 
+                        на престижных фестивалях.</a><br><br>
+                    <a>По истечении обучения, руководители вместе со своими воспитанниками организовали <span style="font-weight: bold;">Театр Молодого 
+                        Актера</span>, который существует и по сей день, являясь высшей ступенью в обучении студийцев.</a><br><br>
+                </div>
+            </div>
+            <div class="attention animate-on-scroll">
+                <hr><a>Многие наши выпускники связали свою жизнь с театром, успешно поступив в театральные ВУЗы!</a><hr>
+            </div>
+            <div class="teamcontent animate-on-scroll">
+                <div class="teamtextfinal animate-on-scroll">
+                    <a>За прошедшие годы школа-студия много раз радовала своего зрителя 
+                        оригинальными спектаклями, которые неизменно получают высокую 
+                        оценку не только у вологодской публики, но и занимают призовые 
+                        места на российских и международных фестивалях.</a><br><br>
+                    <a>Сегодня с нами занимаются дети в возрасте от 3 до 18 лет, есть 
+                        и взрослые группы. Деятельность организации направлена на всестороннее 
+                        развитие ребенка, для нас важно помочь каждому раскрыть свой талант 
+                        и почувствовать себя увереннее, дать возможность для творческого 
+                        самовыражения, способствовать становлению свободной и разносторонней личности.</a>
+                </div>
+                <div class="teambuttons animate-on-scroll">
+                    <a href="{% url 'performances' %}"><button>Деятельность</button></a>
+                    <a href="{% url 'teachers' %}"><button>Педагоги</button></a>
+                    <a href="{% url 'education' %}"><button>Обучение</button></a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer_up">
+            <div class="map">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'team' %}">О коллективе</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'teachers' %}">Педагоги</a>
+                <a href="{% url 'performances' %}">Деятельность</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </div>
+            <div class="contacts2">
+                <div class="block">
+                    <img src="{% static 'img/phone.png' %}">
+                    <a href="tel:+78172758055">+7(817)275-80-55</a>
+                </div>
+                <div class="block">
+                    <a href="mailto:teatr-studio99@mail.ru"><img src="{% static 'img/mail.png' %}"></a>
+                    <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+                </div>
+                <div class="block">
+                    <img src="{% static 'img/location.png' %}">
+                    <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+                </div>
+            </div>
+            <div class="socials">
+                <div class="block2">
+                    <a href="https://vk.com/teatr_tma"><img src="{% static 'img/vk.png' %}"></a>
+                </div>
+                <div class="block2">
+                    <a href="https://www.youtube.com/channel/UCdfqQWyemN2Y1ZtkSkIibNw"><img src="{% static 'img/yt.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_down">
+            <a>© НОУ ДО "Светлые знания", 1999-2025</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

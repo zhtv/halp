@@ -1,0 +1,246 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'media.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Чайка</title>
+</head>
+<body>
+    <header>
+        <div class="contacts">
+            <div class="block">
+                <img src="{% static 'img/phone.png' %}">
+                <a href="tel:+78172758055">+7(817)275-80-55</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/mail.png' %}">
+                <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+            </div>
+            <div class="block">
+                <img src="{% static 'img/location.png' %}">
+                <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+            </div>
+        </div>
+
+        <div class="shapka">
+            <div class="logo">
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"></a>
+            </div>
+
+            <input class="side-menu" type="checkbox" id="side-menu"/>
+            <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+
+            <nav class="nav">
+                <ul class="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'team' %}">О коллективе</a></li>
+                    <li><a href="{% url 'education' %}">Обучение</a></li>
+                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
+                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
+                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="close">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="request">
+                <a class="nazv">ОСТАВИТЬ ЗАЯВКУ</a>
+                <textarea id="textarea" placeholder="Опишите свою проблему..."></textarea>
+                <button class="submit-btn" onclick="submitRequest()">Отправить</button>
+            </div>
+        </div>
+    </div>
+    
+    <main>
+        <div class="cabinet animate-on-scroll">
+            <h1>Личный кабинет</h1>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="showTab(event, 'parent')">Родитель</div>
+                <div class="tab" data-child-id="child-1" onclick="showTab(event, 'child-1')">Ребёнок</div>
+                <div class="add_child">
+                    <button onclick="addChild()">Добавить ребёнка</button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="parent">
+                <div class="left-content">
+                    <div class="tabblock">
+                        <label>ФИО родителя:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="text" placeholder="Фамилия Имя Отчество" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Номер телефона:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="tel" placeholder="+7(123)xxxxxxxxx" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Почта:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="email" placeholder="teatr-studio99@mail.ru" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-content">
+                    <a>По всем вопросам, включая изменение данных о группе ребёнка, пожалуйста, обращайтесь в <span>АДМИНИСТРАЦИЮ</span>, или</a>
+                    <button class="open-modal-btn" onclick="openModal()">ОСТАВЬТЕ ЗАЯВКУ</button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="child-1" style="display: none;">
+                <div class="left-content">
+                    <div class="tabblock">
+                        <label>ФИО ребёнка:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="text" placeholder="Иванова Анна Ивановна" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Дата рождения:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="date" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>                    
+                    <div class="tabblock">
+                        <label>Номер телефона:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="tel" placeholder="+7(9XX)XXXXXXX" style="display:none;" oninput="formatPhoneNumber(this)">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Почта:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">не заполнено</span>
+                            <input class="edit-mode" type="email" placeholder="teatr-studio99@mail.ru" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)">
+                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
+                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Группа:</label>
+                        <span class="view-mode">ТМА (Театр Молодого Актёра) младшая и старшая</span>
+                    </div>
+                    <div class="tabblock">
+                        <label>ФИО и номер телефона курирующего педагога:</label>
+                        <span class="view-mode">Наталья Юрьевна Воробьёва, +7(921)123-45-67</span>
+                    </div>
+                </div>
+                <div class="right-content">
+                    <a>По всем вопросам, включая изменение данных о группе ребёнка, пожалуйста, обращайтесь в <span>АДМИНИСТРАЦИЮ</span>, или</a>
+                    <button class="open-modal-btn" onclick="openModal()">ОСТАВЬТЕ ЗАЯВКУ</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer_up">
+            <div class="map">
+                <a href="{% url 'index' %}">Главная</a>
+                <a href="{% url 'team' %}">О коллективе</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'teachers' %}">Педагоги</a>
+                <a href="{% url 'performances' %}">Деятельность</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </div>
+            <div class="contacts2">
+                <div class="block">
+                    <img src="{% static 'img/phone.png' %}">
+                    <a href="tel:+78172758055">+7(817)275-80-55</a>
+                </div>
+                <div class="block">
+                    <a href="mailto:teatr-studio99@mail.ru"><img src="{% static 'img/mail.png' %}"></a>
+                    <a href="mailto:teatr-studio99@mail.ru">teatr-studio99@mail.ru</a>
+                </div>
+                <div class="block">
+                    <img src="{% static 'img/location.png' %}">
+                    <a href="https://yandex.ru/maps/org/teatr_molodogo_aktera/1107064598/?ll=39.902913%2C59.213689&z=16.82">Россия, г. Вологда, Советский проспект, 35А</a>
+                </div>
+            </div>
+            <div class="socials">
+                <div class="block2">
+                    <a href="https://vk.com/teatr_tma"><img src="{% static 'img/vk.png' %}"></a>
+                </div>
+                <div class="block2">
+                    <a href="https://www.youtube.com/channel/UCdfqQWyemN2Y1ZtkSkIibNw"><img src="{% static 'img/yt.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_down">
+            <a>© НОУ ДО "Светлые знания", 1999-2025</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts.js' %}"></script>
+    <script>
+        const STATIC = {
+            pencil: "{% static 'img/pencil.png' %}",
+            save: "{% static 'img/save.png' %}",
+            cancel: "{% static 'img/cancel.png' %}"
+        };
+    </script>
+</body>
+</html>

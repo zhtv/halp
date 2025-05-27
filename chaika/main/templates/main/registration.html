@@ -39,15 +39,7 @@
             <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
 
             <nav class="nav">
-                <ul class="menu">
-                    <li><a href="{% url 'index' %}">Главная</a></li>
-                    <li><a href="{% url 'team' %}">О коллективе</a></li>
-                    <li><a href="{% url 'education' %}">Обучение</a></li>
-                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
-                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
-                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
-                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
-                </ul>
+                {% include 'main/_navbar.html' with location='header' %}
             </nav>
         </div>
     </header>
@@ -56,22 +48,27 @@
         <div class="auth animate-on-scroll">
             <h1>Регистрация</h1>
             <a>Обязательные для заполнения поля помечены <span style="color: red;">*</span></a>
-            <form action="{% url 'cabinet' %}" method="get">
+            <form id="registrationForm" method="post" novalidate data-url="{% url 'registration' %}">
+                {% csrf_token %}
                 <div class="inputblock animate-on-scroll">
                     <label><span style="color: red;">*</span>Логин (ваш e-mail):</label>
-                    <input type="email" placeholder="teatr-studio99@mail.ru" required>
+                    {{ form.email }}
+                    <div class="error" id="error_email"></div>
                 </div>
                 <div class="inputblock animate-on-scroll">
                     <label><span style="color: red;">*</span>Пароль:</label>
-                    <input type="password" placeholder="Пароль" required>
+                    {{ form.password }}
+                    <div class="error" id="error_password"></div>
                 </div>
                 <div class="inputblock animate-on-scroll">
                     <label><span style="color: red;">*</span>Повторите пароль:</label>
-                    <input type="password" placeholder="Пароль ещё раз" required>
+                    {{ form.password2 }}
+                    <div class="error" id="error_password2"></div>
                 </div>
                 <input type="submit" value="Зарегистрироваться">
                 <a style="margin-top: 0.5%;">Нажимая «Зарегистрироваться», вы даёте согласие на обработку персональных данных</a>
             </form>
+
             <div class="donthave animate-on-scroll">
                 <a>Уже зарегистрированы?</a>
                 <a href="{% url 'auth' %}">Войдите в аккаунт!</a>
@@ -83,12 +80,7 @@
     <footer>
         <div class="footer_up">
             <div class="map">
-                <a href="{% url 'index' %}">Главная</a>
-                <a href="{% url 'team' %}">О коллективе</a>
-                <a href="{% url 'education' %}">Обучение</a>
-                <a href="{% url 'teachers' %}">Педагоги</a>
-                <a href="{% url 'performances' %}">Деятельность</a>
-                <a href="{% url 'contacts' %}">Контакты</a>
+                {% include 'main/_navbar.html' with location='footer' %}
             </div>
             <div class="contacts2">
                 <div class="block">
@@ -118,6 +110,9 @@
         </div>
     </footer>
 
+    <script>
+        const authUrl = "{% url 'auth' %}";
+    </script>
     <script src="{% static 'scripts.js' %}"></script>
 </body>
 </html>

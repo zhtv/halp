@@ -39,15 +39,7 @@
             <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
 
             <nav class="nav">
-                <ul class="menu">
-                    <li><a href="{% url 'index' %}">Главная</a></li>
-                    <li><a href="{% url 'team' %}">О коллективе</a></li>
-                    <li><a href="{% url 'education' %}">Обучение</a></li>
-                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
-                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
-                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
-                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
-                </ul>
+                {% include 'main/_navbar.html' with location='header' %}
             </nav>
         </div>
     </header>
@@ -82,41 +74,65 @@
                     <div class="tabblock">
                         <label>ФИО родителя:</label>
                         <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="text" placeholder="Фамилия Имя Отчество" style="display:none;">
+                            <span class="view-mode">{{ profile.full_name|default:"не заполнено" }}</span>
+                            <input class="edit-mode" type="text" name="full_name" id="full_name" value="{{ profile.full_name }}" 
+                            placeholder="Иванов Иван Иванович" style="display:none;">
                             <button title="Редактировать" onclick="toggleEdit(this)">
                                 <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Сохранить" class="save-edit-btn" onclick="saveField(this)" style="display:none;">
+                                <img src="{% static 'img/save.png' %}" alt="Сохранить">
                             </button>
                             <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
                                 <img src="{% static 'img/cancel.png' %}" alt="Отмена">
                             </button>
                         </div>
+                        <div class="error" id="error_full_name"></div>
                     </div>
                     <div class="tabblock">
                         <label>Номер телефона:</label>
                         <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="tel" placeholder="+7(123)xxxxxxxxx" style="display:none;">
+                            <span class="view-mode">{{ profile.phone_number|default:"не заполнено" }}</span>
+                            <input class="edit-mode" type="tel" name="phone_number" id="phone_number" value="{{ profile.phone_number }}" 
+                            placeholder="+7(9XX)XXXXXXX" style="display:none;">
                             <button title="Редактировать" onclick="toggleEdit(this)">
                                 <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Сохранить" class="save-edit-btn" onclick="saveField(this)" style="display:none;">
+                                <img src="{% static 'img/save.png' %}" alt="Сохранить">
                             </button>
                             <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
                                 <img src="{% static 'img/cancel.png' %}" alt="Отмена">
                             </button>
                         </div>
+                        <div class="error" id="error_phone_number"></div>
                     </div>
                     <div class="tabblock">
                         <label>Почта:</label>
                         <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="email" placeholder="teatr-studio99@mail.ru" style="display:none;">
+                            <span class="view-mode">{{ user.email|default:"не заполнено" }}</span>
+                        </div>
+                    </div>
+                    <div class="tabblock">
+                        <label>Изменить пароль:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">Изменить...</span>
+                            <div class="edit-mode" style="display: none;">
+                                <input type="password" name="current_password" id="current_password" placeholder="Текущий пароль">
+                                <input type="password" name="new_password" id="new_password" placeholder="Новый пароль">
+                            </div>
                             <button title="Редактировать" onclick="toggleEdit(this)">
                                 <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
+                            </button>
+                            <button title="Сохранить" class="save-edit-btn" onclick="saveField(this)" style="display:none;">
+                                <img src="{% static 'img/save.png' %}" alt="Сохранить">
                             </button>
                             <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
                                 <img src="{% static 'img/cancel.png' %}" alt="Отмена">
                             </button>
                         </div>
+                        <div class="error" id="error_current_password"></div>
+                        <div class="error" id="error_new_password"></div>
                     </div>
                 </div>
                 <div class="right-content">
@@ -199,12 +215,7 @@
     <footer>
         <div class="footer_up">
             <div class="map">
-                <a href="{% url 'index' %}">Главная</a>
-                <a href="{% url 'team' %}">О коллективе</a>
-                <a href="{% url 'education' %}">Обучение</a>
-                <a href="{% url 'teachers' %}">Педагоги</a>
-                <a href="{% url 'performances' %}">Деятельность</a>
-                <a href="{% url 'contacts' %}">Контакты</a>
+                {% include 'main/_navbar.html' with location='footer' %}
             </div>
             <div class="contacts2">
                 <div class="block">

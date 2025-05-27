@@ -39,15 +39,7 @@
             <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
 
             <nav class="nav">
-                <ul class="menu">
-                    <li><a href="{% url 'index' %}">Главная</a></li>
-                    <li><a href="{% url 'team' %}">О коллективе</a></li>
-                    <li><a href="{% url 'education' %}">Обучение</a></li>
-                    <li><a href="{% url 'teachers' %}">Педагоги</a></li>
-                    <li><a href="{% url 'performances' %}">Деятельность</a></li>
-                    <li><a href="{% url 'contacts' %}">Контакты</a></li>
-                    <li><a href="{% url 'auth' %}">Аккаунт</a></li>
-                </ul>
+                {% include 'main/_navbar.html' with location='header' %}
             </nav>
         </div>
     </header>
@@ -83,12 +75,7 @@
     <footer>
         <div class="footer_up">
             <div class="map">
-                <a href="{% url 'index' %}">Главная</a>
-                <a href="{% url 'team' %}">О коллективе</a>
-                <a href="{% url 'education' %}">Обучение</a>
-                <a href="{% url 'teachers' %}">Педагоги</a>
-                <a href="{% url 'performances' %}">Деятельность</a>
-                <a href="{% url 'contacts' %}">Контакты</a>
+                {% include 'main/_navbar.html' with location='footer' %}
             </div>
             <div class="contacts2">
                 <div class="block">

@@ -14,8 +14,295 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ЛИЧНЫЙ КАБИНЕТ
 
-let usedChildNumbers = new Set([1]); // Уже есть один ребенок по умолчанию
-const maxChildren = 5;
+// Обновление данных профиля родителя
+function getCSRFToken() {
+    return document.cookie.split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+}
+
+function saveParentProfile() {
+    const fullNameInput = document.querySelector('#full_name');
+    const phoneInput = document.querySelector('#phone_number');
+    const currentPassword = document.querySelector('#current_password');
+    const newPassword = document.querySelector('#new_password');
+
+    const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+    const phoneNumber = phoneInput ? phoneInput.value.trim() : '';
+    const currentPwd = currentPassword ? currentPassword.value.trim() : '';
+    const newPwd = newPassword ? newPassword.value.trim() : '';
+
+    // Валидация пароля на клиенте
+    if (newPwd && (!validatePassword(newPwd))) {
+        showPasswordError("Пароль должен быть не менее 8 символов и содержать хотя бы одну цифру.");
+        return;
+    }
+
+    if (newPwd && currentPwd && newPwd === currentPwd) {
+        showPasswordError("Новый пароль не должен совпадать с текущим.");
+        return;
+    }
+
+    fetch('/update-profile/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: new URLSearchParams({
+            full_name: fullName,
+            phone_number: phoneNumber,
+            current_password: currentPwd,
+            new_password: newPwd
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            if (data.error && data.error.toLowerCase().includes("пароль")) {
+                showPasswordError(data.error);
+            } else {
+                console.error("Ошибка:", data.error);
+            }
+            // При ошибке форма остается открытой — ничего менять не нужно
+        } else {
+            clearPasswordFields();
+            if (currentPwd && newPwd) {
+                alert("Пароль успешно изменён!");
+                collapsePasswordEditUI();
+            } else {
+                alert("Профиль успешно обновлён!");
+                // можно дополнительно свернуть редактирование ФИО/телефона, если нужно
+            }
+
+            // Сворачиваем UI для изменения пароля после успешного обновления
+            const container = document.querySelector('input[name="new_password"]').closest('.tabblockinside');
+            if (container) {
+                const viewMode = container.querySelector('.view-mode');
+                const editMode = container.querySelector('.edit-mode');
+                const cancelButton = container.querySelector('.cancel-edit-btn');
+                const saveButton = container.querySelector('.save-edit-btn');
+                const editButton = container.querySelector('button[onclick^="toggleEdit"]');
+                
+                if (editMode) editMode.style.display = 'none';
+                if (viewMode) viewMode.style.display = 'inline';
+                if (cancelButton) cancelButton.style.display = 'none';
+                if (saveButton) saveButton.style.display = 'none';
+                if (editButton) editButton.style.display = 'inline';
+            }
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка при сохранении профиля:", error);
+    });
+}
+
+function collapsePasswordEditUI() {
+    const container = document.querySelector('#current_password')?.closest('.tabblockinside');
+    if (!container) return;
+
+    const viewMode = container.querySelector('.view-mode');
+    const editMode = container.querySelector('.edit-mode');
+    const cancelButton = container.querySelector('.cancel-edit-btn');
+    const saveButton = container.querySelector('.save-edit-btn');
+    const editButton = container.querySelector('button[onclick^="toggleEdit"]');
+
+    if (viewMode) {
+        viewMode.textContent = "установлен";
+        viewMode.style.display = 'inline';
+    }
+    if (editMode) editMode.style.display = 'none';
+    if (cancelButton) cancelButton.style.display = 'none';
+    if (saveButton) saveButton.style.display = 'none';
+    if (editButton) editButton.style.display = 'inline';
+}
+
+function validatePassword(password) {
+    return password.length >= 8 && /\d/.test(password);
+}
+
+function showPasswordError(message) {
+    const errorElem = document.querySelector('#error_current_password');
+    if (errorElem) {
+        errorElem.textContent = message;
+        errorElem.style.display = 'inline';
+    }
+}
+
+function clearPasswordFields() {
+    const currentPassword = document.getElementById('current_password');
+    const newPassword = document.getElementById('new_password');
+    const errorCurrent = document.getElementById('error_current_password');
+    const errorNew = document.getElementById('error_new_password');
+
+    if (currentPassword) currentPassword.value = '';
+    if (newPassword) newPassword.value = '';
+    if (errorCurrent) {
+        errorCurrent.innerText = '';
+        errorCurrent.style.display = 'none';
+    }
+    if (errorNew) {
+        errorNew.innerText = '';
+        errorNew.style.display = 'none';
+    }
+}
+
+
+// Функция редактирования (без изменений)
+function toggleEdit(button) {
+    const container = button.parentElement;
+    const viewMode = container.querySelector('.view-mode');
+    const editMode = container.querySelector('.edit-mode');
+    const cancelButton = container.querySelector('.cancel-edit-btn');
+    const saveButton = container.querySelector('.save-edit-btn');
+    const buttonImage = button.querySelector('img');
+
+    if (editMode.style.display === 'none' || editMode.style.display === '') {
+        // Включаем режим редактирования
+        editMode.dataset.originalValue = editMode.value || '';
+        editMode.style.display = 'inline';
+        viewMode.style.display = 'none';
+        cancelButton.style.display = 'inline';
+        saveButton.style.display = 'inline';
+        button.style.display = 'none'; // скрываем кнопку "Редактировать"
+        const errorElems = container.querySelectorAll('.error');
+        errorElems.forEach(el => el.textContent = '');
+    }
+}
+
+function saveField(button) {
+    const container = button.parentElement;
+    const viewMode = container.querySelector('.view-mode');
+    const cancelButton = container.querySelector('.cancel-edit-btn');
+    const editButton = container.querySelector('button[onclick^="toggleEdit"]');
+    const saveButton = container.querySelector('.save-edit-btn');
+
+    // Очистим ошибки
+    ['full_name', 'phone_number', 'current_password', 'new_password'].forEach(field => {
+        const el = document.getElementById('error_' + field);
+        if (el) el.innerText = '';
+    });
+
+    const currentPassword = container.querySelector('input[name="current_password"]');
+    const newPassword = container.querySelector('input[name="new_password"]');
+
+    if (currentPassword && newPassword) {
+        // Обработка смены пароля
+        const currentPwd = currentPassword.value.trim();
+        const newPwd = newPassword.value.trim();
+
+        let hasError = false;
+
+        if (!currentPwd) {
+            const errEl = document.getElementById('error_current_password');
+            if (errEl) {
+                errEl.innerText = "Введите текущий пароль.";
+                errEl.style.display = 'inline';
+            }
+            hasError = true;
+        }
+
+        if (!newPwd) {
+            document.getElementById('error_new_password').innerText = "Введите новый пароль.";
+            hasError = true;
+        }
+
+        if (newPwd && !validatePassword(newPwd)) {
+            const errEl = document.getElementById('error_new_password');
+            if (errEl) {
+                errEl.innerText = "Пароль должен быть не менее 8 символов и содержать хотя бы одну цифру.";
+                errEl.style.display = 'inline'; // <--- ЭТО ВАЖНО
+            }
+            hasError = true;
+        }
+
+        if (newPwd && currentPwd && newPwd === currentPwd) {
+            const errEl = document.getElementById('error_new_password');
+            if (errEl) {
+                errEl.innerText = "Новый пароль не должен совпадать с текущим.";
+                errEl.style.display = 'inline';
+            }
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        saveParentProfile();
+
+    } else {
+        // Обработка ФИО и телефона
+        const editInput = container.querySelector('.edit-mode');
+        if (!editInput || editInput.value.trim() === '') {
+            const fieldName = editInput?.name || '';
+            const errorElem = document.getElementById('error_' + fieldName);
+            if (errorElem) {
+                errorElem.innerText = "Поле не может быть пустым!";
+                errorElem.style.display = 'inline';
+            }
+            return;
+        }
+
+        const fieldName = editInput?.name || '';
+        const value = editInput?.value.trim() || '';
+        const errorElem = document.getElementById('error_' + fieldName);
+
+        // Валидация
+        if (fieldName === 'full_name') {
+            const nameRegex = /^[А-Яа-яЁё\s\-]{1,50}$/;
+            if (!nameRegex.test(value)) {
+                if (errorElem) {
+                    errorElem.innerText = "ФИО должно содержать только буквы и пробелы, максимум 50 символов.";
+                    errorElem.style.display = 'inline';
+                }
+                return;
+            }
+        }
+
+        if (fieldName === 'phone_number') {
+            const phoneRegex = /^[0-9+()\-\s]{1,15}$/;
+            if (!phoneRegex.test(value) || /[A-Za-zА-Яа-яЁё]/.test(value)) {
+                if (errorElem) {
+                    errorElem.innerText = "Телефон может содержать только цифры, пробелы и спецсимволы, максимум 15 символов.";
+                    errorElem.style.display = 'inline';
+                }
+                return;
+            }
+        }
+
+        // Если ошибок нет — только тогда скрываем поле и сохраняем
+        viewMode.textContent = value;
+        editInput.style.display = 'none';
+        viewMode.style.display = 'inline';
+        cancelButton.style.display = 'none';
+        saveButton.style.display = 'none';
+        editButton.style.display = 'inline';
+
+        saveParentProfile();
+
+    }
+}
+
+function cancelEdit(button) {
+    const container = button.parentElement;
+    const editMode = container.querySelector('.edit-mode');
+    const viewMode = container.querySelector('.view-mode');
+    const editButton = container.querySelector('button[onclick^="toggleEdit"]');
+    const saveButton = container.querySelector('.save-edit-btn'); // Добавляем кнопку "Сохранить"
+
+    editMode.style.display = 'none';
+    viewMode.style.display = 'inline';
+    button.style.display = 'none';  // скрываем кнопку "Отмена"
+    if (saveButton) saveButton.style.display = 'none'; // скрываем кнопку "Сохранить"
+    if (editButton) editButton.style.display = 'inline';  // показываем кнопку "Редактировать"
+
+    // Очистка ошибок
+    const errorElems = container.querySelectorAll('.error');
+    errorElems.forEach(el => el.textContent = '');
+}
+
+// детей
+let childrenTabs = []; // Массив объектов { id: 'child-1', contentElement, tabElement }
+const maxChildren = 4;
 
 // Функция переключения вкладок
 function showTab(event, tabId) {
@@ -31,68 +318,6 @@ function showTab(event, tabId) {
     event.currentTarget.classList.add('active');
 }
 
-// Функция редактирования (без изменений)
-function toggleEdit(button) {
-    const container = button.parentElement;
-    const viewMode = container.querySelector('.view-mode');
-    const editMode = container.querySelector('.edit-mode');
-    const cancelButton = container.querySelector('.cancel-edit-btn');
-    let errorElem = container.querySelector('.error-message');
-    const buttonImage = button.querySelector('img');
-
-    if (editMode.style.display === 'none' || editMode.style.display === '') {
-        // Включаем режим редактирования
-        editMode.dataset.originalValue = editMode.value || '';
-        editMode.style.display = 'inline';
-        viewMode.style.display = 'none';
-        cancelButton.style.display = 'inline';
-        buttonImage.src = STATIC.save;
-        button.title = "Сохранить";
-        if (errorElem) errorElem.style.display = 'none';
-    } else {
-        // Сохранение
-        if (editMode.value.trim() === '') {
-            if (!errorElem) {
-                errorElem = document.createElement('span');
-                errorElem.className = 'error-message';
-                errorElem.style.color = '#D4003D';
-                errorElem.style.fontWeight = 'bold';
-                errorElem.style.marginLeft = '5px';
-                container.appendChild(errorElem);
-            }
-            errorElem.textContent = 'Поле не может быть пустым!';
-            errorElem.style.display = 'inline';
-            return;
-        }
-
-        viewMode.textContent = editMode.value;
-        editMode.style.display = 'none';
-        viewMode.style.display = 'inline';
-        cancelButton.style.display = 'none';
-        buttonImage.src = STATIC.pencil;
-        button.title = "Редактировать";
-        if (errorElem) errorElem.style.display = 'none';
-    }
-}
-
-function cancelEdit(button) {
-    const container = button.parentElement;
-    const editMode = container.querySelector('.edit-mode');
-    const viewMode = container.querySelector('.view-mode');
-    const editButton = container.querySelector('button[onclick^="toggleEdit"]');
-    const buttonImage = editButton.querySelector('img');
-    let errorElem = container.querySelector('.error-message');
-
-    // Отмена редактирования, восстановление прежнего значения
-    editMode.value = editMode.dataset.originalValue || '';
-    editMode.style.display = 'none';
-    viewMode.style.display = 'inline';
-    button.style.display = 'none';
-    buttonImage.src = STATIC.pencil;
-    if (errorElem) errorElem.style.display = 'none';
-}
-
-
 // Получаем первый свободный номер
 function getNextAvailableChildNumber() {
     for (let i = 1; i <= maxChildren; i++) {
@@ -105,13 +330,12 @@ function getNextAvailableChildNumber() {
 
 // Функция добавления новой вкладки для ребёнка
 function addChild() {
-    const nextNumber = getNextAvailableChildNumber();
-    if (nextNumber === null) {
+    if (childrenTabs.length >= maxChildren) {
         alert("Нельзя добавить больше 5 детей!");
         return;
     }
 
-    usedChildNumbers.add(nextNumber);
+    const nextNumber = childrenTabs.length + 2;
     const childId = 'child-' + nextNumber;
 
     const newTab = document.createElement('div');
@@ -186,13 +410,14 @@ function addChild() {
                 </div>
             </div>
             <div class="tabblock">
-                <label>Группа:</label>
-                <span class="view-mode">ТМА (Театр Молодого Актёра) младшая и старшая</span>
-            </div>
-            <div class="tabblock">
-                <label>ФИО и номер телефона курирующего педагога:</label>
-                <span class="view-mode">Наталья Юрьевна Воробьёва, +7(921)123-45-67</span>
-            </div>
+                        <label>Группа:</label>
+                        <span class="view-mode">заполняется администратором</span>
+                    </div>
+                    <div class="tabblock">
+                        <label>ФИО и номер телефона курирующего педагога:</label>
+                        <span class="view-mode">заполняется администратором</span>
+                    </div>
+            <button class="delete_child" onclick="removeChildTab('${childId}')">Удалить ребёнка</button>
         </div>
         <div class="right-content">
             <a>По всем вопросам, включая изменение данных о группе ребёнка, пожалуйста, обращайтесь в <span>АДМИНИСТРАЦИЮ</span>, или</a>
@@ -201,31 +426,48 @@ function addChild() {
     `;
 
     document.querySelector('.cabinet').appendChild(newContent);
+    childrenTabs.push({ id: childId, contentElement: newContent, tabElement: newTab });
     showTab({ currentTarget: newTab }, childId);
 }
 
 // Функция удаления вкладки ребёнка
-function removeChildTab(childId, number) {
-    console.log('Удаляем ребёнка с id:', childId);
+function removeChildTab(childId) {
+    const index = childrenTabs.findIndex(child => child.id === childId);
+    if (index === -1) return;
 
-    const content = document.getElementById(childId);
-    if (content && content.parentNode) {
-        content.parentNode.removeChild(content);
-    }
+    const { contentElement, tabElement } = childrenTabs[index];
 
-    const tab = document.querySelector(`.tab[data-child-id="${childId}"]`);
-    if (tab && tab.parentNode) {
-        tab.parentNode.removeChild(tab);
-    }
+    contentElement.remove();
+    tabElement.remove();
 
-    usedChildNumbers.delete(number); // Освобождаем номер
+    childrenTabs.splice(index, 1);
 
-    const activeTab = document.querySelector('.tab.active');
-    if (!activeTab || activeTab.getAttribute('data-child-id') === childId) {
-        const parentTab = document.querySelector('.tab[onclick*="parent"]');
-        if (parentTab) {
-            parentTab.click();
+    // Пересоздать нумерацию
+    childrenTabs.forEach((child, i) => {
+        const newNumber = i + 2;
+        const newId = 'child-' + newNumber;
+
+        child.id = newId;
+        child.contentElement.id = newId;
+        child.tabElement.setAttribute('data-child-id', newId);
+        child.tabElement.textContent = 'Ребёнок ' + newNumber;
+
+        // Обновить обработчик клика
+        child.tabElement.onclick = function(event) {
+            showTab(event, newId);
+        };
+
+        // Обновить кнопку удаления в HTML содержимом (если нужно)
+        const deleteButton = child.contentElement.querySelector('.delete_child');
+        if (deleteButton) {
+            deleteButton.setAttribute('onclick', `removeChildTab('${newId}')`);
         }
+    });
+
+    // Вернуться на вкладку родителя
+    const parentTab = document.querySelector('.tab[onclick*="parent"]');
+    if (parentTab) {
+        parentTab.click();
     }
 }
 
@@ -269,7 +511,7 @@ function submitRequest() {
         alert("Пожалуйста, опишите вашу проблему перед отправкой!");
     } else {
         // Если текст не пустой, показываем сообщение об отправке
-        alert("Заявка успешно отправлена!");
+        alert("Заявка успешно отправлена, мы постараемся обработать её как можно скорее!");
 
         // Очистка поля ввода
         textarea.value = ""; 
@@ -329,3 +571,139 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+// чтобы страница не обновлялась при отправке формы, регистрация
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registrationForm');
+    const url = form.dataset.url;  // Получаем URL из data-url атрибута
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Очистить ошибки
+        ['email', 'password', 'password2'].forEach(field => {
+            document.getElementById('error_' + field).innerText = '';
+        });
+
+        const formData = new FormData(form);
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie('csrftoken')
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('HTTP error ' + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Регистрация прошла успешно!');
+                window.location.href = authUrl;  // Перенаправление на страницу входа
+            } else {
+                for (const [field, errs] of Object.entries(data.errors)) {
+                    const errorText = errs.map(e => e.message).join(', ');
+                    document.getElementById('error_' + field).innerText = errorText;
+                }
+            }
+        })
+        .catch(err => {
+            alert('Произошла ошибка, попробуйте позже.');
+            console.error(err);
+        });
+    });
+
+    // Функция получения CSRF cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+// АВТОРИЗАЦИЯ
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('authForm');
+    const url = form.dataset.url;
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Очистка ошибок
+        ['username', 'password'].forEach(field => {
+            document.getElementById('error_' + field).innerText = '';
+        });
+
+        const formData = new FormData(form);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('HTTP error ' + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Редирект после успешной авторизации
+                window.location.href = data.redirect_url;
+            } else {
+                for (const [field, errs] of Object.entries(data.errors)) {
+                    const errorText = errs.map(e => e.message).join(', ');
+                    document.getElementById('error_' + field).innerText = errorText;
+                }
+            }
+        })
+        .catch(err => {
+            alert('Произошла ошибка, попробуйте позже.');
+            console.error(err);
+        });
+    });
+});

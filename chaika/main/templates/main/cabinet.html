@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="{% static 'media.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,8 +51,11 @@
             </div>
             <div class="request">
                 <a class="nazv">ОСТАВИТЬ ЗАЯВКУ</a>
-                <textarea id="textarea" placeholder="Опишите свою проблему..."></textarea>
-                <button class="submit-btn" onclick="submitRequest()">Отправить</button>
+                <form id="request-form" method="post">
+                    {% csrf_token %}
+                    <textarea id="request-textarea" placeholder="Опишите свою проблему..."></textarea>
+                    <button type="button" class="submit-btn" onclick="submitRequest()">Отправить</button>
+                </form>
             </div>
         </div>
     </div>
@@ -62,8 +65,7 @@
             <h1>Личный кабинет</h1>
             
             <div class="tabs">
-                <div class="tab active" onclick="showTab(event, 'parent')">Родитель</div>
-                <div class="tab" data-child-id="child-1" onclick="showTab(event, 'child-1')">Ребёнок</div>
+                <div class="tab active" data-tab="parent" onclick="showTab(event, 'parent')">Родитель</div>
                 <div class="add_child">
                     <button onclick="addChild()">Добавить ребёнка</button>
                 </div>
@@ -90,12 +92,18 @@
                         <div class="error" id="error_full_name"></div>
                     </div>
                     <div class="tabblock">
+                        <label>Почта:</label>
+                        <div class="tabblockinside">
+                            <span class="view-mode">{{ user.email|default:"нет email" }}</span>
+                        </div>
+                    </div>
+                    <div class="tabblock">
                         <label>Номер телефона:</label>
                         <div class="tabblockinside">
                             <span class="view-mode">{{ profile.phone_number|default:"не заполнено" }}</span>
                             <input class="edit-mode" type="tel" name="phone_number" id="phone_number" value="{{ profile.phone_number }}" 
-                            placeholder="+7(9XX)XXXXXXX" style="display:none;">
-                            <button title="Редактировать" onclick="toggleEdit(this)">
+                            placeholder="+7(9XX)XXX-XX-XX" oninput="formatPhoneNumber(this)" onfocus="initPhoneInput(this)" style="display:none;">
+                            <button title="Редактировать" onclick="toggleEdit(this)" onfocus="initPhoneInput(this)">
                                 <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
                             </button>
                             <button title="Сохранить" class="save-edit-btn" onclick="saveField(this)" style="display:none;">
@@ -106,12 +114,6 @@
                             </button>
                         </div>
                         <div class="error" id="error_phone_number"></div>
-                    </div>
-                    <div class="tabblock">
-                        <label>Почта:</label>
-                        <div class="tabblockinside">
-                            <span class="view-mode">{{ user.email|default:"не заполнено" }}</span>
-                        </div>
                     </div>
                     <div class="tabblock">
                         <label>Изменить пароль:</label>
@@ -140,74 +142,13 @@
                     <button class="open-modal-btn" onclick="openModal()">ОСТАВЬТЕ ЗАЯВКУ</button>
                 </div>
             </div>
-            
-            <div class="tab-content" id="child-1" style="display: none;">
-                <div class="left-content">
-                    <div class="tabblock">
-                        <label>ФИО ребёнка:</label>
-                        <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="text" placeholder="Иванова Анна Ивановна" style="display:none;">
-                            <button title="Редактировать" onclick="toggleEdit(this)">
-                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
-                            </button>
-                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
-                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="tabblock">
-                        <label>Дата рождения:</label>
-                        <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="date" style="display:none;">
-                            <button title="Редактировать" onclick="toggleEdit(this)">
-                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
-                            </button>
-                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
-                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
-                            </button>
-                        </div>
-                    </div>                    
-                    <div class="tabblock">
-                        <label>Номер телефона:</label>
-                        <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="tel" placeholder="+7(9XX)XXXXXXX" style="display:none;" oninput="formatPhoneNumber(this)">
-                            <button title="Редактировать" onclick="toggleEdit(this)">
-                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
-                            </button>
-                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
-                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="tabblock">
-                        <label>Почта:</label>
-                        <div class="tabblockinside">
-                            <span class="view-mode">не заполнено</span>
-                            <input class="edit-mode" type="email" placeholder="teatr-studio99@mail.ru" style="display:none;">
-                            <button title="Редактировать" onclick="toggleEdit(this)">
-                                <img src="{% static 'img/pencil.png' %}" alt="Редактировать">
-                            </button>
-                            <button title="Отменить" class="cancel-edit-btn" onclick="cancelEdit(this)" style="display:none;">
-                                <img src="{% static 'img/cancel.png' %}" alt="Отмена">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="tabblock">
-                        <label>Группа:</label>
-                        <span class="view-mode">ТМА (Театр Молодого Актёра) младшая и старшая</span>
-                    </div>
-                    <div class="tabblock">
-                        <label>ФИО и номер телефона курирующего педагога:</label>
-                        <span class="view-mode">Наталья Юрьевна Воробьёва, +7(921)123-45-67</span>
-                    </div>
-                </div>
-                <div class="right-content">
-                    <a>По всем вопросам, включая изменение данных о группе ребёнка, пожалуйста, обращайтесь в <span>АДМИНИСТРАЦИЮ</span>, или</a>
-                    <button class="open-modal-btn" onclick="openModal()">ОСТАВЬТЕ ЗАЯВКУ</button>
-                </div>
+        </div>
+
+        <!-- Секция с заявками пользователя -->
+        <div class="user-requests">
+            <h1>Мои заявки</h1>
+            <div class="requests-list" id="requests-list">
+                <!-- Заявки будут загружаться здесь -->
             </div>
         </div>
     </main>
@@ -252,6 +193,29 @@
             save: "{% static 'img/save.png' %}",
             cancel: "{% static 'img/cancel.png' %}"
         };
+
+        document.querySelectorAll('input[type="tel"]').forEach(input => {
+            input.addEventListener('focus', () => {
+                if (!input.value.startsWith('+7')) {
+                    input.value = '+7(';
+                    const event = {target: input};
+                    formatPhoneNumber(event);
+                }
+            });
+            
+            input.addEventListener('input', (e) => {
+                formatPhoneNumber(e.target);
+            });
+            
+            // Запрещаем удаление +7(
+            input.addEventListener('keydown', (e) => {
+                // Разрешаем удаление только если курсор находится после +7(
+                if ((e.key === 'Backspace' || e.key === 'Delete') && 
+                    e.target.selectionStart <= 3 && e.target.selectionEnd <= 3) {
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
 </body>
 </html>

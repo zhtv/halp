@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="{% static 'media.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,19 +51,140 @@
                     <button class="admin-tab-button admin-active" data-tab="admin-groups">Группы</button>
                     <button class="admin-tab-button" data-tab="admin-teachers">Педагоги</button>
                     <button class="admin-tab-button" data-tab="admin-performances">Спектакли</button>
-                    <button class="admin-tab-button" data-tab="admin-requests">Заявки (0)</button>
+                    <button class="admin-tab-button" data-tab="admin-children">Дети</button>
+                    <button class="admin-tab-button" data-tab="admin-requests">Активные заявки (<span id="new-requests-count">новые: {{ new_requests_count }}</span>)</button>
+                    <button class="admin-tab-button" data-tab="admin-archive-requests">Архив заявок</button>
                 </div>
                 <div class="admin-tab-content admin-active" id="admin-groups">
-                    <p>Редактирование информации о группах (здесь будет форма или таблица).</p>
+                    <a class="admin-tab-info">Здесь можно добавлять новые группы, а также редактировать и удалять информацию об уже существующих.</a>
                 </div>
                 <div class="admin-tab-content" id="admin-teachers">
-                    <p>Редактирование информации о педагогах.</p>
+                    <a class="admin-tab-info">Здесь можно добавлять новых педагогов, а также редактировать и удалять информацию об уже существующих.</a>
                 </div>
                 <div class="admin-tab-content" id="admin-performances">
-                    <p>Редактирование информации о спектаклях.</p>
+                    <a class="admin-tab-info">Здесь можно добавлять новые спектакли, а также редактировать и удалять информацию об уже существующих.</a>
+                </div>
+                <div class="admin-tab-content" id="admin-children">
+                    <a class="admin-tab-info">Здесь можно редактировать информацию о группе и курирующем педагоге ребёнка.</a>
                 </div>
                 <div class="admin-tab-content" id="admin-requests">
-                    <p>Заявки от пользователей.</p>
+                    <div class="requests-admin-container">
+                        <a class="admin-tab-info">Список новых и принятых в работу заявок. Заявки со статусом "Выполнена" или "Закрыта" будут отправлены в архив. После изменения комментария или статуса обязательно сохраняйте изменения!</a>
+                        <div class="requests-filter">
+                            <label for="status-filter">Фильтр по статусу:</label>
+                            <select id="status-filter">
+                                <option value="all">Все</option>
+                                <option value="new">Новые</option>
+                                <option value="in_progress">В обработке</option>
+                            </select>
+                        </div>
+                        <table class="requests-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Дата</th>
+                                    <th>Пользователь</th>
+                                    <th>Текст заявки</th>
+                                    <th>Статус</th>
+                                    <th>Комментарий</th>
+                                    <th>Написать комментарий</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                <tr class="request-row status-{{ request.status }}" data-request-id="{{ request.id }}">
+                                    <td><b>{{ request.id }}</b></td>
+                                    <td>{{ request.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                    {{ request.user.parentprofile.full_name|default:"Не указано" }}<br>
+                                    {{ request.user.email }}
+                                    </td>
+                                    <td>{{ request.text }}</td>
+                                    <td class="status-display">{{ request.get_status_display }}</td>
+                                    <td class="comment-display">{{ request.admin_comment|default:"-" }}</td>
+                                    <td>
+                                        <div class="request-select">
+                                        <textarea class="admin-comment" data-request-id="{{ request.id }}" 
+                                                placeholder="Введите комментарий...">{{ request.admin_comment|default:"" }}</textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="request-select">
+                                            <select class="status-select" data-request-id="{{ request.id }}">
+                                                <option value="new" {% if request.status == 'new' %}selected{% endif %}>новая</option>
+                                                <option value="in_progress" {% if request.status == 'in_progress' %}selected{% endif %}>в обработке</option>
+                                                <option value="completed" {% if request.status == 'completed' %}selected{% endif %}>выполнена</option>
+                                                <option value="rejected" {% if request.status == 'rejected' %}selected{% endif %}>закрыта</option>
+                                            </select>
+                                            <button class="save-changes" data-request-id="{{ request.id }}">Сохранить</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="admin-tab-content" id="admin-archive-requests">
+                    <div class="requests-admin-container">
+                        <a class="admin-tab-info">Архив выполненных и закрытых заявок. Если заявка попала сюда по ошибке, измените её статус 
+                            на "Новая" или "В обработке", и она снова появится в списке активных заявок. После изменения статуса обязательно сохраняйте изменения!</a>
+                        <div class="requests-filter">
+                            <label for="archive-status-filter">Фильтр по статусу:</label>
+                            <select id="archive-status-filter">
+                                <option value="all">Все</option>
+                                <option value="completed">Выполненные</option>
+                                <option value="rejected">Закрытые</option>
+                            </select>
+                        </div>
+                        <table class="requests-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Дата</th>
+                                    <th>Пользователь</th>
+                                    <th>Текст заявки</th>
+                                    <th>Статус</th>
+                                    <th>Комментарий</th>
+                                    <th>Написать комментарий</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in archived_requests %}
+                                <tr class="request-row status-{{ request.status }}" data-request-id="{{ request.id }}">
+                                    <td><b>{{ request.id }}</b></td>
+                                    <td>{{ request.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        {{ request.user.parentprofile.full_name|default:"Не указано" }}<br>
+                                        {{ request.user.email }}
+                                    </td>
+                                    <td>{{ request.text }}</td>
+                                    <td class="status-display">{{ request.get_status_display }}</td>
+                                    <td class="comment-display">{{ request.admin_comment|default:"-" }}</td>
+                                    <td>
+                                        <div class="request-select">
+                                        <textarea class="admin-comment" data-request-id="{{ request.id }}" 
+                                                placeholder="Введите комментарий...">{{ request.admin_comment|default:"" }}</textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="request-select">
+                                            <select class="status-select" data-request-id="{{ request.id }}">
+                                                <option value="new" {% if request.status == 'new' %}selected{% endif %}>новая</option>
+                                                <option value="in_progress" {% if request.status == 'in_progress' %}selected{% endif %}>в обработке</option>
+                                                <option value="completed" {% if request.status == 'completed' %}selected{% endif %}>выполнена</option>
+                                                <option value="rejected" {% if request.status == 'rejected' %}selected{% endif %}>закрыта</option>
+                                            </select>
+                                            <button class="save-changes" data-request-id="{{ request.id }}">Сохранить</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

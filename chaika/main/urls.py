@@ -16,4 +16,12 @@ urlpatterns = [
     path('team/', views.team, name='team'),
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
     path('update-profile/', views.update_parent_profile, name='update_profile'),
+    path('get_children_data/', views.get_children_data, name='get_children_data'),
+    path('update_child_data/', views.update_child_data, name='update_child_data'),
+    path('add_child/', views.add_child, name='add_child'),
+    path('delete_child/', views.delete_child, name='delete_child'),
+    path('create-request/', views.create_request, name='create_request'),
+    path('get-requests/', views.get_user_requests, name='get_requests'),
+    path('update-request-status/', views.update_request_status, name='update_request_status'),
+    path('filter-requests/', views.filter_requests, name='filter_requests'),
 ]

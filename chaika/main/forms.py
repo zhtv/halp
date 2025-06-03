@@ -26,7 +26,7 @@ class RegistrationForm(forms.Form):
     def clean_password(self):
         password = self.cleaned_data['password']
         # Проверка пароля: минимум 8 символов, хотя бы одна цифра, латинские буквы, цифры и спецсимволы
-        if not re.match(r'^[A-Za-z0-9@#$%^&+=!]*$', password):
+        if not re.match(r'^[A-Za-z0-9@#$%^&+=!_?\-.*]*$', password):
             raise forms.ValidationError("Пароль может содержать только латинские буквы, цифры и специальные символы")
         if not re.search(r'\d', password):
             raise forms.ValidationError("Пароль должен содержать хотя бы одну цифру")

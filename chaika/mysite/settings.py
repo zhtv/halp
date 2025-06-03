@@ -109,7 +109,9 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ru'
 USE_I18N = True
 
-TIME_ZONE = 'UTC'
+# Установите правильный часовой пояс
+TIME_ZONE = 'Europe/Moscow'  # Например, для Москвы (MSK, UTC+3)
+USE_TZ = True  # Важно включить поддержку часовых поясов
 
 USE_I18N = True
 

@@ -37,7 +37,7 @@ main {
 /* ПОЛОСА НАВЕРХУ */
 .contacts {
     padding: 5px 15%;
-    background-color: #D4003D;
+    background-color: rgb(212, 0, 61, 0.85);
     color: white;
     font-weight: bold;
     font-size: 18px;
@@ -558,20 +558,54 @@ input[type=submit]:active {
 }
 
 .tabs {
+    width: 100%;
     display: flex;
     gap: 15px;
+    overflow-x: auto;
+    scrollbar-width: thin; /* Тонкий скролл (Firefox) */
+    scrollbar-color: #EB5D45 white; /* Цвет: ползунок и трек (Firefox) */
+}
+
+/* Стили для Chrome/Safari/Edge */
+.tabs::-webkit-scrollbar {
+    height: 6px; /* Толщина полосы */
+}
+
+.tabs::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Цвет трека */
+    border-radius: 3px;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+    background: #EB5D45; /* Цвет ползунка */
+    border-radius: 3px;
+}
+
+.tabs::-webkit-scrollbar-thumb:hover {
+    background: #D4003D; /* Цвет при наведении */
+}
+
+.tab, .add_child button {
+    flex-shrink: 0;
+    min-width: 125px;
+    height: 50px; /* Фиксированная высота */
+    box-sizing: border-box; /* Учитываем padding и border в общей высоте */
 }
 
 .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px 15px;
     cursor: pointer;
     min-width: 125px;
-    text-align: center;
     border-radius: 15px 15px 0px 0px;
     color: black;
     background-color: white;
     border: 3px #82CCCD solid;
     border-bottom: none;
+    text-align: center;  /* Добавьте это */
+    word-wrap: break-word; /* Перенос длинных слов */
 }
 
 .tab.active {
@@ -584,11 +618,14 @@ input[type=submit]:active {
 }
 
 .add_child button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     color: black;
     font-size: 20px;
     padding: 10px 15px;
-    min-width: 125px;
+    min-width: 215px;
     border-radius: 15px 15px 0px 0px;
     border-bottom: 5px solid rgba(0, 0, 0, 0);
     background-color: #82CCCD;
@@ -672,7 +709,8 @@ input[type=submit]:active {
     cursor: pointer;
 }
 
-.request {
+.request, .request form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -684,7 +722,7 @@ input[type=submit]:active {
     font-size: 24px;
 }
 
-textarea {
+.request form textarea {
     min-width: 100%;
     max-width: 100%;
     height: 100px;
@@ -782,27 +820,226 @@ textarea {
     font-weight: bold;
     border: none;
     padding: 5px 15px;
-    background-color: #D4003D;
-    border-radius: 15px;
-    color: white;
+    background-color: white;
+    color: #D4003D;
+    border: 3px solid #D4003D;
+    border-radius: 30px;
     text-decoration: none;
     cursor: pointer;
+    margin-top: 2%;
 }
 
 .delete_child:hover {
-    background-color: #EB5D45;
-    color: white;
+    color: #EB5D45;
+    border: 3px solid #EB5D45;
     transition: 0.2s;
 }
 
 .delete_child:active {
-    background-color: #141414;
-    color: white;
+    color: #82CCCD;
+    border: 3px solid #82CCCD;
 }
 
-.delete_child {
-    margin-top: 2%;
+/* ЗАЯВКИ ПОЛЬЗОВАТЕЛЯ */
+.user-requests {
+    padding: 0% 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.requests-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.request-item {
+    background-color: white;
+    border-radius: 15px;
+    border: 3px solid #EB5D45;
+    padding: 1% 2%;
+    max-width: 45%;
+}
+
+.request-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.request-id {
+    font-size: 24px;
+    font-weight: bold;
+    color: #EB5D45;
+}
+
+.request-date {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.request-text {
+    margin-top: 1%;
+}
+
+.announce {
+    font-weight: bold;
+    color: #EB5D45;
+}
+
+.admin-comment hr {
+    width: 100%;
+    border: 0.5px solid #EB5D45;
+    margin: 2% 0px;
+}
+
+.admin-comment .announce {
+    font-weight: bold;
+    color: #D4003D;
+}
+
+/* ЗАЯВКИ СО СТОРОНЫ АДМИНА */
+.requests-admin-container, .requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 0;
+}
+
+.admin-tab-info {
+    font-size: 16px;
+}
+
+.requests-filter {
+    margin-top: 0.5%;
+    margin-bottom: 1%;
+}
+
+.requests-filter label {
+    font-weight: bold;
+    font-size: 24px;
+    color: #EB5D45;
+}
+
+.requests-filter select {
     font-size: 20px;
+    padding: 2px;
+}
+
+.requests-table {
+    font-size: 16px;
+    max-width: 100%;
+    table-layout: fixed; /* Фиксированная ширина колонок */
+}
+
+.requests-table th:nth-child(1),
+.requests-table td:nth-child(1) {
+    width: 3%; /* ID */
+}
+
+.requests-table th:nth-child(2),
+.requests-table td:nth-child(2) {
+    width: 5%; /* Дата */
+}
+
+.requests-table th:nth-child(3),
+.requests-table td:nth-child(3) {
+    width: 8%; /* Пользователь */
+    min-width: 8%;
+    max-width: 10%;
+}
+
+.requests-table th:nth-child(4),
+.requests-table td:nth-child(4) {
+    width: 15%; /* Текст заявки */
+}
+
+.requests-table th:nth-child(5),
+.requests-table td:nth-child(5) {
+    width: 5%; /* Статус */
+}
+
+.requests-table th:nth-child(6),
+.requests-table td:nth-child(6) {
+    width: 8%; /* Комментарий */
+}
+
+.requests-table th:nth-child(7),
+.requests-table td:nth-of-type(7) {
+    width: 10%; /* Редактировать комментарий */
+}
+
+.requests-table th:nth-child(8),
+.requests-table td:nth-of-type(8) {
+    width: 5%; /* Редактировать статус */
+    padding: 0px 10px;
+}
+
+.requests-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.requests-table th {
+    background-color: #EB5D45;
+    border: 3px solid #EB5D45;
+    color: white;
+    padding: 5px 0px;
+}
+
+.requests-table td {
+    background-color: white;
+    border: 3px solid #EB5D45;
+    text-align: center;
+    padding: 5px;
+}
+
+.requests-table td textarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    max-height: 200px;
+}
+
+.request-select {
+    width: 100%;
+    display: inline-flex; /* Используем inline-flex вместо flex */
+    flex-direction: column;
+    align-items: center; /* Выравниваем элементы по центру горизонтально */
+    gap: 5px;
+    margin: 0 auto; /* Автоматические отступы по бокам для центрирования */
+}
+
+.status-select {
+    padding: 2px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.save-changes {
+    font-weight: bold;
+    border: none;
+    padding: 2px;
+    background-color: white;
+    color: #D4003D;
+    border: 3px solid #D4003D;
+    border-radius: 30px;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.save-changes:hover {
+    color: #EB5D45;
+    border: 3px solid #EB5D45;
+    transition: 0.2s;
+}
+
+.save-changes:active {
+    color: #82CCCD;
+    border: 3px solid #82CCCD;
 }
 
 /* ОБУЧЕНИЕ */
